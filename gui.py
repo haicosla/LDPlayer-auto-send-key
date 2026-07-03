@@ -19,6 +19,7 @@ from action_groups import ACTION_GROUPS, load_action_groups, save_action_groups
 from record_duration_tool import open_record_duration_window
 from record_runner import open_record_runner_window
 from logger import get_logger
+from ui_theme import apply_theme, FONT_HEADER, FONT_SMALL
 logger = get_logger()
 
 # Biến toàn cục
@@ -165,23 +166,23 @@ def _make_job_buttons(btn_frame, idx, job, is_pending):
     """Tạo bộ nút Chạy/Sửa/Xóa/Dừng... cho 1 job — dùng chung cho cả 2 chế độ hiển thị."""
     if is_pending:
         if hasattr(job, 'is_repeating') and job.is_repeating:
-            ttk.Button(btn_frame, text="Dừng lặp", width=8,
+            ttk.Button(btn_frame, text="Dừng lặp", width=8, style="Danger.TButton",
                        command=lambda j=job: stop_repeating(j)).pack(side="left", padx=(0, 2))
-        ttk.Button(btn_frame, text="Chạy", width=5,
+        ttk.Button(btn_frame, text="Chạy", width=5, style="Success.TButton",
                    command=lambda i=idx: run_job_now(i)).pack(side="left", padx=(0, 2))
-        ttk.Button(btn_frame, text="Sửa", width=5,
+        ttk.Button(btn_frame, text="Sửa", width=5, style="Warning.TButton",
                    command=lambda i=idx: edit_job(i, True)).pack(side="left", padx=(0, 2))
-        ttk.Button(btn_frame, text="Xóa", width=5,
+        ttk.Button(btn_frame, text="Xóa", width=5, style="Danger.TButton",
                    command=lambda i=idx: remove_job(i, True)).pack(side="left", padx=(0, 2))
     else:
         if job.is_group and job.status == "Đang chạy":
-            ttk.Button(btn_frame, text="Dừng", width=5,
+            ttk.Button(btn_frame, text="Dừng", width=5, style="Danger.TButton",
                        command=lambda j=job: stop_job(j)).pack(side="left", padx=(0, 2))
-        ttk.Button(btn_frame, text="Sửa", width=5,
+        ttk.Button(btn_frame, text="Sửa", width=5, style="Warning.TButton",
                    command=lambda i=idx: edit_job(i, False)).pack(side="left", padx=(0, 2))
-        ttk.Button(btn_frame, text="Hẹn lại", width=6,
+        ttk.Button(btn_frame, text="Hẹn lại", width=6, style="Ghost.TButton",
                    command=lambda i=idx: reschedule_job(i, False)).pack(side="left", padx=(0, 2))
-        ttk.Button(btn_frame, text="Xóa", width=5,
+        ttk.Button(btn_frame, text="Xóa", width=5, style="Danger.TButton",
                    command=lambda i=idx: remove_job(i, False)).pack(side="left")
 
 
@@ -272,11 +273,11 @@ def _render_job_section_grouped(parent_frame, sorted_jobs, is_pending):
                 df.pack(fill="x", anchor="w", padx=(18, 0))
                 state["on"] = True
 
-        ttk.Button(header_btns, text="Thu gọn/Mở", width=11,
+        ttk.Button(header_btns, text="Thu gọn/Mở", width=11, style="Ghost.TButton",
                    command=toggle).pack(side="right", padx=(2, 0))
 
         if is_pending:
-            ttk.Button(header_btns, text="Sửa cả nhóm", width=11,
+            ttk.Button(header_btns, text="Sửa cả nhóm", width=11, style="Warning.TButton",
                        command=lambda g=group_name: edit_group_schedule(g)).pack(side="right", padx=(2, 0))
 
         for idx, job in entries:
@@ -361,9 +362,9 @@ def edit_group_schedule(group_name):
             row = ttk.Frame(times_list_frame)
             row.pack(fill="x", pady=1)
             ttk.Label(row, text=f"{hm}  ({len(times_map[hm])} máy)").pack(side="left")
-            ttk.Button(row, text="Sửa giờ này", width=11,
+            ttk.Button(row, text="Sửa giờ này", width=11, style="Warning.TButton",
                        command=lambda h=hm: _edit_one_time(h)).pack(side="right", padx=(2, 0))
-            ttk.Button(row, text="Xóa giờ này", width=11,
+            ttk.Button(row, text="Xóa giờ này", width=11, style="Danger.TButton",
                        command=lambda h=hm: _delete_one_time(h)).pack(side="right", padx=(2, 0))
 
     def _edit_one_time(old_hm):
@@ -521,7 +522,7 @@ def edit_group_schedule(group_name):
 
     ttk.Button(bulk_frame, text="Áp dụng (thay thế toàn bộ)", command=apply_bulk).pack(anchor="e", padx=5, pady=(0, 5))
 
-    ttk.Button(main_frame, text="Đóng", command=win.destroy).pack(anchor="e", pady=(5, 0))
+    ttk.Button(main_frame, text="Đóng", style="Ghost.TButton", command=win.destroy).pack(anchor="e", pady=(5, 0))
 
     win.update_idletasks()
     w, h = win.winfo_width(), win.winfo_height()
@@ -1062,8 +1063,8 @@ def edit_job(display_index, is_pending=True):
             except ValueError:
                 auto_close_messagebox("error", "Lỗi", "Định dạng thời gian không hợp lệ. Vui lòng nhập theo định dạng HH:MM")
       
-        ttk.Button(btn_frame, text="Lưu thay đổi", command=save_changes).pack(side="right", padx=5)
-        ttk.Button(btn_frame, text="Hủy", command=edit_window.destroy).pack(side="right")
+        ttk.Button(btn_frame, text="Lưu thay đổi", style="Success.TButton", command=save_changes).pack(side="right", padx=5)
+        ttk.Button(btn_frame, text="Hủy", style="Ghost.TButton", command=edit_window.destroy).pack(side="right")
       
         time_entry.focus_set()
         time_entry.select_range(0, "end")
@@ -1294,7 +1295,7 @@ def manage_groups():
   
     ttk.Button(btn_frame, text="Tạo nhóm mới", command=create_new_group).pack(side="left", padx=5)
     ttk.Button(btn_frame, text="Chỉnh sửa nhóm", command=edit_selected_group).pack(side="left", padx=5)
-    ttk.Button(btn_frame, text="Xóa nhóm", command=delete_selected_group).pack(side="left", padx=5)
+    ttk.Button(btn_frame, text="Xóa nhóm", style="Danger.TButton", command=delete_selected_group).pack(side="left", padx=5)
   
     group_window.update_idletasks()
     width = group_window.winfo_width()
@@ -1513,7 +1514,7 @@ def edit_group_window(group):
     action_btn_frame.pack(fill="x", pady=5)
     ttk.Button(action_btn_frame, text="Thêm hành động", command=add_action).pack(side="left", padx=5)
     ttk.Button(action_btn_frame, text="Chỉnh sửa hành động", command=edit_action).pack(side="left", padx=5)
-    ttk.Button(action_btn_frame, text="Xóa hành động", command=delete_action).pack(side="left", padx=5)
+    ttk.Button(action_btn_frame, text="Xóa hành động", style="Danger.TButton", command=delete_action).pack(side="left", padx=5)
   
     def save_group():
         new_name = name_var.get().strip()
@@ -1540,8 +1541,8 @@ def edit_group_window(group):
         window.destroy()
         auto_close_messagebox("info", "Thành công", f"Nhóm '{new_name}' đã được {'tạo' if is_new else 'cập nhật'}.")
   
-    ttk.Button(main_frame, text="Lưu nhóm", command=save_group).pack(side="right", padx=5, pady=10)
-    ttk.Button(main_frame, text="Hủy", command=window.destroy).pack(side="right", padx=5, pady=10)
+    ttk.Button(main_frame, text="Lưu nhóm", style="Success.TButton", command=save_group).pack(side="right", padx=5, pady=10)
+    ttk.Button(main_frame, text="Hủy", style="Ghost.TButton", command=window.destroy).pack(side="right", padx=5, pady=10)
   
     window.update_idletasks()
     width = window.winfo_width()
@@ -1611,9 +1612,29 @@ def create_gui():
     filename = os.path.basename(sys.argv[0]) if sys.argv else "unknown.py"
     root.title(f"LDPlayer Multi-Launcher + Script Clicker ({filename})")
     root.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
+    root.minsize(720, 520)
     root.protocol("WM_DELETE_WINDOW", on_closing)
-  
-    main_frame = ttk.Frame(root, padding=10)
+
+    # Áp theme dùng chung cho cả cửa sổ chính lẫn mọi cửa sổ con mở sau này
+    apply_theme(root)
+    try:
+        icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "icon.ico")
+        if os.path.exists(icon_path):
+            root.iconbitmap(icon_path)
+    except Exception:
+        pass  # bỏ qua nếu hệ điều hành không hỗ trợ .ico (vd: Linux/macOS)
+
+    outer_frame = ttk.Frame(root)
+    outer_frame.pack(fill="both", expand=True)
+
+    header = ttk.Frame(outer_frame, padding=(14, 12, 14, 8))
+    header.pack(fill="x")
+    ttk.Label(header, text="🎮 LDPlayer Multi-Launcher", font=FONT_HEADER).pack(anchor="w")
+    ttk.Label(header, text="Điều khiển & lên lịch cho nhiều giả lập LDPlayer",
+              font=FONT_SMALL, foreground="#6B7280").pack(anchor="w")
+    ttk.Separator(outer_frame, orient="horizontal").pack(fill="x")
+
+    main_frame = ttk.Frame(outer_frame, padding=10)
     main_frame.pack(fill="both", expand=True)
 
     # Ô tuỳ chỉnh kích thước cửa sổ
@@ -1731,7 +1752,7 @@ def create_gui():
     inst_btn_frame = ttk.Frame(emulator_frame)
     inst_btn_frame.pack(fill="x", pady=(2, 4))
     ttk.Button(inst_btn_frame, text="Khởi", width=5, command=launch_selected).pack(side="left", padx=2)
-    ttk.Button(inst_btn_frame, text="Đóng", width=5, command=close_selected).pack(side="left", padx=2)
+    ttk.Button(inst_btn_frame, text="Đóng", width=5, style="Danger.TButton", command=close_selected).pack(side="left", padx=2)
     ttk.Button(inst_btn_frame, text="OpRec", width=5, command=open_operation_recorder).pack(side="left", padx=2)
     ttk.Button(inst_btn_frame, text="Lên", width=5, command=bring_to_front).pack(side="left", padx=2)
   
@@ -1744,7 +1765,7 @@ def create_gui():
     button_frame = ttk.Frame(main_frame)
     button_frame.pack(fill="x", pady=5)
     ttk.Button(button_frame, text="Đặt giờ chạy", command=set_schedule).pack(side="left", expand=True, fill="x", padx=(0, 5))
-    ttk.Button(button_frame, text="Chạy ngay", command=run_now).pack(side="right", expand=True, fill="x", padx=(5, 0))
+    ttk.Button(button_frame, text="Chạy ngay", style="Success.TButton", command=run_now).pack(side="right", expand=True, fill="x", padx=(5, 0))
   
     schedule_time_frame = ttk.Frame(main_frame)
     schedule_time_frame.pack(fill="x", pady=10)
@@ -1788,11 +1809,11 @@ def create_gui():
     button_container = ttk.Frame(group_frame)
     button_container.pack(fill="x", pady=5)
    
-    ttk.Button(button_container, text="Chạy ngay", command=run_group_now).pack(side="left", expand=True, fill="x", padx=5)
+    ttk.Button(button_container, text="Chạy ngay", style="Success.TButton", command=run_group_now).pack(side="left", expand=True, fill="x", padx=5)
     ttk.Button(button_container, text="Đặt giờ nhóm", command=set_group_schedule).pack(side="left", expand=True, fill="x", padx=5)
     ttk.Button(button_container, text="Quản lý nhóm", command=manage_groups).pack(side="left", expand=True, fill="x", padx=5)
     ttk.Button(button_container, text="Đặt làm mặc định", command=set_default_group).pack(side="left", expand=True, fill="x", padx=5)
-    ttk.Button(button_container, text="Xóa mặc định", command=clear_default_group).pack(side="left", expand=True, fill="x", padx=5)
+    ttk.Button(button_container, text="Xóa mặc định", style="Danger.TButton", command=clear_default_group).pack(side="left", expand=True, fill="x", padx=5)
    
     default_status_label = ttk.Label(group_frame, text="Chưa có nhóm mặc định")
     default_status_label.pack(anchor="w", pady=(5, 0))
@@ -1807,7 +1828,7 @@ def create_gui():
     key_button_frame = ttk.Frame(key_frame)
     key_button_frame.pack(fill="x", pady=(5, 0))
     ttk.Button(key_button_frame, text="Đặt giờ gửi phím", command=set_key_schedule).pack(side="left", expand=True, fill="x", padx=(0, 5))
-    ttk.Button(key_button_frame, text="Gửi phím ngay", command=run_key_now).pack(side="right", expand=True, fill="x", padx=(5, 0))
+    ttk.Button(key_button_frame, text="Gửi phím ngay", style="Success.TButton", command=run_key_now).pack(side="right", expand=True, fill="x", padx=(5, 0))
   
         # ==================== DANH SÁCH CÔNG VIỆC HẸN GIỜ ====================
     jobs_list_frame = ttk.LabelFrame(main_frame, text="Danh sách công việc hẹn giờ")

@@ -1630,5 +1630,177 @@
         "is_repeating": true,
         "repeat_interval": 86400,
         "origin_time": "2026-07-03T12:02:02"
+    },
+    {
+        "time_str": "14:40:00",
+        "instance": "Kyle",
+        "job_type": null,
+        "value": null,
+        "group_name": "Thư ký",
+        "is_group": true,
+        "group_jobs": [
+            {
+                "time_str": "14:42:17",
+                "instance": "Kyle",
+                "job_type": "key",
+                "value": "alt+k",
+                "group_name": "Thư ký",
+                "is_group": false,
+                "group_jobs": [],
+                "status": "Đã chạy",
+                "current_child_index": null,
+                "is_repeating": false,
+                "repeat_interval": 0,
+                "origin_time": null
+            },
+            {
+                "time_str": "14:42:47",
+                "instance": "Kyle",
+                "job_type": "key",
+                "value": "f",
+                "group_name": "Thư ký",
+                "is_group": false,
+                "group_jobs": [],
+                "status": "Đã chạy",
+                "current_child_index": null,
+                "is_repeating": false,
+                "repeat_interval": 0,
+                "origin_time": null
+            }
+        ],
+        "status": "Đã chạy",
+        "current_child_index": 2,
+        "is_repeating": false,
+        "repeat_interval": 0,
+        "origin_time": null
+    },
+    {
+        "time_str": "14:40:00",
+        "instance": "Cutoi",
+        "job_type": null,
+        "value": null,
+        "group_name": "Thư ký",
+        "is_group": true,
+        "group_jobs": [
+            {
+                "time_str": "14:40:52",
+                "instance": "Cutoi",
+                "job_type": "key",
+                "value": "alt+k",
+                "group_name": "Thư ký",
+                "is_group": false,
+                "group_jobs": [],
+                "status": "Đã chạy",
+                "current_child_index": null,
+                "is_repeating": false,
+                "repeat_interval": 0,
+                "origin_time": null
+            },
+            {
+                "time_str": "14:41:22",
+                "instance": "Cutoi",
+                "job_type": "key",
+                "value": "f",
+                "group_name": "Thư ký",
+                "is_group": false,
+                "group_jobs": [],
+                "status": "Đã chạy",
+                "current_child_index": null,
+                "is_repeating": false,
+                "repeat_interval": 0,
+                "origin_time": null
+            }
+        ],
+        "status": "Đã chạy",
+        "current_child_index": 2,
+        "is_repeating": false,
+        "repeat_interval": 0,
+        "origin_time": null
+    },
+    {
+        "time_str": "14:41:00",
+        "instance": "Kyle",
+        "job_type": null,
+        "value": null,
+        "group_name": "Thư ký",
+        "is_group": true,
+        "group_jobs": [
+            {
+                "time_str": "14:41:00",
+                "instance": "Kyle",
+                "job_type": "key",
+                "value": "alt+k",
+                "group_name": "Thư ký",
+                "is_group": false,
+                "group_jobs": [],
+                "status": "Đã hẹn",
+                "current_child_index": null,
+                "is_repeating": false,
+                "repeat_interval": 0,
+                "origin_time": null
+            },
+            {
+                "time_str": "14:41:30",
+                "instance": "Kyle",
+                "job_type": "key",
+                "value": "f",
+                "group_name": "Thư ký",
+                "is_group": false,
+                "group_jobs": [],
+                "status": "Đã hẹn",
+                "current_child_index": null,
+                "is_repeating": false,
+                "repeat_interval": 0,
+                "origin_time": null
+            }
+        ],
+        "status": "Bỏ qua - Trùng lượt",
+        "current_child_index": 0,
+        "is_repeating": false,
+        "repeat_interval": 0,
+        "origin_time": null
+    },
+    {
+        "time_str": "14:41:00",
+        "instance": "Cutoi",
+        "job_type": null,
+        "value": null,
+        "group_name": "Thư ký",
+        "is_group": true,
+        "group_jobs": [
+            {
+                "time_str": "14:41:00",
+                "instance": "Cutoi",
+                "job_type": "key",
+                "value": "alt+k",
+                "group_name": "Thư ký",
+                "is_group": false,
+                "group_jobs": [],
+                "status": "Đã hẹn",
+                "current_child_index": null,
+                "is_repeating": false,
+                "repeat_interval": 0,
+                "origin_time": null
+            },
+            {
+                "time_str": "14:41:30",
+                "instance": "Cutoi",
+                "job_type": "key",
+                "value": "f",
+                "group_name": "Thư ký",
+                "is_group": false,
+                "group_jobs": [],
+                "status": "Đã hẹn",
+                "current_child_index": null,
+                "is_repeating": false,
+                "repeat_interval": 0,
+                "origin_time": null
+            }
+        ],
+        "status": "Bỏ qua - Trùng lượt",
+        "current_child_index": 0,
+        "is_repeating": false,
+        "repeat_interval": 0,
+        "origin_time": null
     }
 ]

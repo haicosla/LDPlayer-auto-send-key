@@ -262,11 +262,11 @@ class RecordDurationApp(tk.Toplevel):
         top = tk.Frame(self, padx=10, pady=10)
         top.pack(fill="x")
 
-        tk.Label(top, text="Thư mục record:").pack(side="left")
-        tk.Entry(top, textvariable=self.folder_var).pack(side="left", fill="x", expand=True, padx=6)
-        tk.Button(top, text="Chọn thư mục...", command=self.choose_folder).pack(side="left", padx=2)
-        tk.Button(top, text="Lưu làm mặc định", command=self.save_default).pack(side="left", padx=2)
-        tk.Button(top, text="Tải lại", command=self.refresh).pack(side="left", padx=2)
+        ttk.Label(top, text="Thư mục record:").pack(side="left")
+        ttk.Entry(top, textvariable=self.folder_var).pack(side="left", fill="x", expand=True, padx=6)
+        ttk.Button(top, text="Chọn thư mục...", style="Ghost.TButton", command=self.choose_folder).pack(side="left", padx=2)
+        ttk.Button(top, text="Lưu làm mặc định", style="Success.TButton", command=self.save_default).pack(side="left", padx=2)
+        ttk.Button(top, text="Tải lại", style="Ghost.TButton", command=self.refresh).pack(side="left", padx=2)
 
         # ── Bảng kết quả ──
         columns = ("name", "hotkey", "loop", "duration_sec", "duration_min")

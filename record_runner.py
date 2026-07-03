@@ -263,7 +263,7 @@ class GroupManagerWindow(tk.Toplevel):
         self.new_group_var = tk.StringVar()
         ttk.Entry(new_row, textvariable=self.new_group_var, width=13).pack(side="left")
         ttk.Button(new_row, text="+", width=2, command=self._add_group).pack(side="left", padx=2)
-        ttk.Button(left, text="Xóa nhóm đang chọn", command=self._delete_group).pack(fill="x", pady=(2, 0))
+        ttk.Button(left, text="Xóa nhóm đang chọn", style="Danger.TButton", command=self._delete_group).pack(fill="x", pady=(2, 0))
 
         # ── Cột phải: file thuộc nhóm ──
         right = ttk.Frame(body)
@@ -274,10 +274,10 @@ class GroupManagerWindow(tk.Toplevel):
         for fname in self.all_filenames:
             self.file_listbox.insert("end", display_name(fname))
 
-        ttk.Button(right, text="Lưu thành viên nhóm này", command=self._save_members).pack(fill="x", pady=(6, 0))
+        ttk.Button(right, text="Lưu thành viên nhóm này", style="Success.TButton", command=self._save_members).pack(fill="x", pady=(6, 0))
 
         # nút đóng
-        ttk.Button(self, text="Đóng", command=self.destroy).pack(pady=(0, 10))
+        ttk.Button(self, text="Đóng", style="Ghost.TButton", command=self.destroy).pack(pady=(0, 10))
 
         self._refresh_group_listbox()
 
@@ -369,16 +369,16 @@ class CalibrateWindow(tk.Toplevel):
         self.on_done = on_done
         self._result = None
 
-        tk.Label(self, text=title, font=("", 11, "bold")).pack(pady=(14, 4))
-        tk.Label(self,
+        ttk.Label(self, text=title, font=("", 11, "bold")).pack(pady=(14, 4))
+        ttk.Label(self,
                  text=f"Giả lập dùng để calibrate: {instance_name}\n"
                       "Đang tự động mở Ctrl+8 và di chuyển cửa sổ Operation Recorder...",
                  justify="left").pack(padx=16)
 
-        self.btn = tk.Button(self, text="Bắt đầu chọn (3s đếm ngược)",
+        self.btn = ttk.Button(self, text="Bắt đầu chọn (3s đếm ngược)", style="Success.TButton",
                              command=self._start_countdown, state="disabled")
         self.btn.pack(pady=10)
-        self.status = tk.Label(self, text="Đang mở Ctrl+8...", fg="blue")
+        self.status = ttk.Label(self, text="Đang mở Ctrl+8...", foreground="#2F6FED")
         self.status.pack()
 
         threading.Thread(target=self._auto_open, daemon=True).start()
@@ -387,7 +387,7 @@ class CalibrateWindow(tk.Toplevel):
         hwnd = _find_hwnd(self.instance_name)
         if not hwnd:
             self.after(0, lambda: self.status.config(
-                text=f"⚠ Không tìm thấy cửa sổ '{self.instance_name}'", fg="red"))
+                text=f"⚠ Không tìm thấy cửa sổ '{self.instance_name}'", foreground="#E1483F"))
             return
         _silent_focus(hwnd)
         time.sleep(0.1)
@@ -400,7 +400,7 @@ class CalibrateWindow(tk.Toplevel):
     def _ready_for_countdown(self):
         self.status.config(
             text="Đã mở Operation Recorder. Bấm nút bên dưới rồi di chuột\n"
-                 "tới vị trí dòng đầu tiên trong danh sách trong 3s.", fg="blue")
+                 "tới vị trí dòng đầu tiên trong danh sách trong 3s.", foreground="#2F6FED")
         self.btn.config(state="normal")
 
     def _start_countdown(self):
@@ -479,7 +479,7 @@ class RecordRunnerWindow(tk.Toplevel):
         self.dir_var = tk.StringVar(value=records_dir_default)
         ttk.Entry(frm_dir, textvariable=self.dir_var).pack(side="left", fill="x", expand=True, padx=5, pady=4)
         ttk.Button(frm_dir, text="Chọn...", command=self._browse_dir).pack(side="left", padx=2)
-        ttk.Button(frm_dir, text="Lưu", command=self._save_dir).pack(side="left", padx=2)
+        ttk.Button(frm_dir, text="Lưu", style="Success.TButton", command=self._save_dir).pack(side="left", padx=2)
 
         # ── Tọa độ play ───────────────────────────────────────
         frm_coord = ttk.LabelFrame(self, text="Tọa độ click dòng đầu trong Operation Recorder")
@@ -494,7 +494,7 @@ class RecordRunnerWindow(tk.Toplevel):
         ttk.Entry(coord_row, textvariable=self.play_y_var, width=7).pack(side="left", padx=4)
         ttk.Button(coord_row, text="Calibrate (tự lấy tọa độ)",
                    command=self._calibrate).pack(side="left", padx=8)
-        ttk.Button(coord_row, text="Lưu tọa độ", command=self._save_coords).pack(side="left")
+        ttk.Button(coord_row, text="Lưu tọa độ", style="Success.TButton", command=self._save_coords).pack(side="left")
 
         # ── Chọn giả lập ─────────────────────────────────────
         frm_inst = ttk.LabelFrame(self, text="Chọn giả lập")
@@ -571,6 +571,8 @@ class RecordRunnerWindow(tk.Toplevel):
 
         self._record_data = []      # toàn bộ record quét được (không lọc)
         self._visible_records = []  # record đang hiển thị (đã lọc theo nhóm), cùng thứ tự với các dòng/button
+        self._record_buttons = {}   # tên file -> tk.Button, dùng để tô sáng nút đang chọn
+        self._selected_record_name = None  # tên file record đang được chọn ở chế độ dạng nút
 
 
         ttk.Button(frm_rec, text="Tải lại danh sách",
@@ -579,10 +581,10 @@ class RecordRunnerWindow(tk.Toplevel):
         # ── Nút chạy / log ────────────────────────────────────
         frm_run = ttk.Frame(self)
         frm_run.pack(fill="x", padx=10, pady=6)
-        self.run_btn = ttk.Button(frm_run, text="▶ Chạy trên giả lập đã chọn",
+        self.run_btn = ttk.Button(frm_run, text="▶ Chạy trên giả lập đã chọn", style="Success.TButton",
                                    command=self._start_run)
         self.run_btn.pack(side="left", expand=True, fill="x", padx=(0, 5))
-        ttk.Button(frm_run, text="✕ Dừng", command=self._stop_run).pack(side="left")
+        ttk.Button(frm_run, text="✕ Dừng", style="Danger.TButton", command=self._stop_run).pack(side="left")
 
         # Log
         frm_log = ttk.LabelFrame(self, text="Log")
@@ -695,8 +697,20 @@ class RecordRunnerWindow(tk.Toplevel):
                 self.tree.insert("", "end",
                                   values=(display_name(r["name"]), group_str, r["hotkey"],
                                           r["loop_text"], r["duration_sec_text"]))
-        if self._visible_records:
-            self.tree.selection_set(self.tree.get_children()[0])
+        ok_names = [r["name"] for r in self._visible_records if not r["error"]]
+        if self._selected_record_name not in ok_names:
+            self._selected_record_name = ok_names[0] if ok_names else None
+
+        children = self.tree.get_children()
+        if children:
+            if self._selected_record_name is not None:
+                target_idx = next(
+                    i for i, r in enumerate(self._visible_records)
+                    if r["name"] == self._selected_record_name
+                )
+                self.tree.selection_set(children[target_idx])
+            else:
+                self.tree.selection_set(children[0])
 
         self._build_group_quick_buttons()
         self._build_record_buttons()
@@ -712,11 +726,13 @@ class RecordRunnerWindow(tk.Toplevel):
             is_selected = (name == current)
             b = tk.Button(
                 self.group_btns_frame, text=name,
+                font=("", 8),
+                padx=6, pady=1,
                 relief="sunken" if is_selected else "raised",
-                bg="#cfe8ff" if is_selected else None,
+                bg="#cfe8ff" if is_selected else "#F0F0F0",
                 command=lambda n=name: self._select_group_quick(n)
             )
-            b.pack(side="left", padx=3, pady=2)
+            b.pack(side="left", padx=2, pady=1)
 
     def _select_group_quick(self, name):
         self.group_filter_var.set(name)
@@ -740,21 +756,31 @@ class RecordRunnerWindow(tk.Toplevel):
             self.back_to_table_btn.pack_forget()
             self.tree.pack(fill="both", expand=True, padx=5, pady=4)
 
+    _RECORD_BTN_NORMAL_BG = "#F0F0F0"
+    _RECORD_BTN_SELECTED_BG = "#cfe8ff"
+
     def _build_record_buttons(self):
         for w in self.record_btns_frame.winfo_children():
             w.destroy()
-        cols = 4
+        self._record_buttons = {}
+        cols = 6
         for i, r in enumerate(self._visible_records):
             text = display_name(r["name"])
             is_error = bool(r["error"])
+            is_selected = (not is_error) and (r["name"] == self._selected_record_name)
             btn = tk.Button(
                 self.record_btns_frame,
                 text=("⚠ " + text) if is_error else text,
-                width=22, height=2, wraplength=170, justify="center",
+                font=("", 8),
+                width=15, height=1, wraplength=110, justify="center",
                 fg="red" if is_error else "black",
+                relief="sunken" if is_selected else "raised",
+                bg=self._RECORD_BTN_SELECTED_BG if is_selected else self._RECORD_BTN_NORMAL_BG,
                 command=lambda rec=r: self._select_record_button(rec)
             )
-            btn.grid(row=i // cols, column=i % cols, padx=4, pady=4, sticky="nsew")
+            btn.grid(row=i // cols, column=i % cols, padx=2, pady=2, sticky="nsew")
+            if not is_error:
+                self._record_buttons[r["name"]] = btn
 
     def _select_record_button(self, rec):
         # Tìm dòng tương ứng trong tree (nguồn dữ liệu chọn dùng chung cho lúc Chạy)
@@ -768,6 +794,19 @@ class RecordRunnerWindow(tk.Toplevel):
         iid = children[idx]
         self.tree.selection_set(iid)
         self.tree.see(iid)
+
+        # Bỏ tô sáng nút cũ, tô sáng nút vừa chọn — để luôn nhìn thấy rõ
+        # đang chọn record nào ở chế độ hiển thị dạng nút.
+        prev_name = self._selected_record_name
+        prev_btn = self._record_buttons.get(prev_name)
+        if prev_btn is not None and prev_btn.winfo_exists():
+            prev_btn.config(relief="raised", bg=self._RECORD_BTN_NORMAL_BG)
+
+        self._selected_record_name = rec["name"]
+        new_btn = self._record_buttons.get(rec["name"])
+        if new_btn is not None and new_btn.winfo_exists():
+            new_btn.config(relief="sunken", bg=self._RECORD_BTN_SELECTED_BG)
+
         self._log(f"Đã chọn: {display_name(rec['name'])}")
 
     def _open_group_manager(self):
