@@ -1,0 +1,102 @@
+[
+    {
+        "name": "Đá gà",
+        "actions": [
+            {
+                "type": "key",
+                "value": "alt+y",
+                "delay": 10
+            }
+        ]
+    },
+    {
+        "name": "Thu ruộng",
+        "actions": [
+            {
+                "type": "key",
+                "value": "alt+r",
+                "delay": 5
+            }
+        ]
+    },
+    {
+        "name": "Thư ký",
+        "actions": [
+            {
+                "type": "key",
+                "value": "alt+k",
+                "delay": 30
+            },
+            {
+                "type": "key",
+                "value": "f",
+                "delay": 30
+            }
+        ]
+    },
+    {
+        "name": "Chạy clone 2acc",
+        "actions": [
+            {
+                "type": "launch",
+                "value": "1",
+                "delay": 80
+            },
+            {
+                "type": "key",
+                "value": "alt+1",
+                "delay": 5
+            }
+        ]
+    },
+    {
+        "name": "Nhiệm vụ",
+        "actions": [
+            {
+                "type": "key",
+                "value": "alt+2",
+                "delay": 2
+            }
+        ]
+    },
+    {
+        "name": "log lại",
+        "actions": [
+            {
+                "type": "key",
+                "value": "alt+l",
+                "delay": 50
+            }
+        ]
+    },
+    {
+        "name": "test",
+        "actions": [
+            {
+                "type": "key",
+                "value": "alt+x",
+                "delay": 3
+            }
+        ]
+    },
+    {
+        "name": "Văn nghệ",
+        "actions": [
+            {
+                "type": "key",
+                "value": "alt+v",
+                "delay": 5
+            }
+        ]
+    },
+    {
+        "name": "test2",
+        "actions": [
+            {
+                "type": "key",
+                "value": "alt+]",
+                "delay": 120
+            }
+        ]
+    }
+]

@@ -1,0 +1,25 @@
+{
+    "groups": {
+        "acc 9": [
+            "0-bat sau3.record",
+            "0-Full 9.record",
+            "11-bắt cá.record",
+            "12-dào khoáng.record",
+            "12-mỏ khoáng 2.record",
+            "9-1 An tiệc tửu lâu.record",
+            "9-an tiệc chính tinh.record",
+            "9-an tiệc sever.record",
+            "9-an tiệc vị tinh.record"
+        ],
+        "clone": [
+            "0-full Clone.record",
+            "00-log clone.record",
+            "00000.record",
+            "1-daga clone.record",
+            "1-do xe clone.record",
+            "1-ht phim sv cl 1.record",
+            "1-ht phim sv cl 2.record",
+            "1-xoá mail cl.record"
+        ]
+    }
+}
